@@ -9,10 +9,10 @@ import numpy as np
 import random
 
 LEARNING_RATE = 0.01
-EPOCHS = 10
+EPOCHS = 1
 
 
-def get_model(learning_rate=0.01):
+def simple_network(learning_rate=0.01):
     cn = input_data(shape=[None, 28, 28, 1], name='input')
 
     cn = conv_2d(cn, 32, 2, activation='relu')
@@ -30,14 +30,16 @@ def get_model(learning_rate=0.01):
     return tflearn.DNN(cn)
 
 
-# model.fit(X, Y, n_epoch=10, validation_set=(test_x, test_y), snapshot_step=500, show_metric=True, run_id='mnist')
-# model.save('tflearncnn.model')
-
-def train_network(model, X, Y, epochs, test_x, test_y, save_model=True, model_name="tflearnmodel"):
+def train_model(model, X, Y, epochs, test_x, test_y, save_model=True, model_name="tflearnmodel"):
     model.fit(X, Y, n_epoch=epochs, validation_set=(test_x, test_y), snapshot_step=500, show_metric=True,
               run_id='mnist')
     if save_model:
         model.save(model_name)
+
+
+def load_model(model, model_name='tflearnmodel'):
+    return model.load(model_name)
+
 
 
 def predict_from_model(model, data):
@@ -62,12 +64,13 @@ def main():
     X = X.reshape([-1, 28, 28, 1])
     test_x = test_x.reshape([-1, 28, 28, 1])
 
-    model = get_model(LEARNING_RATE)
+    model = simple_network(LEARNING_RATE)
     plt_result(model, test_x)
 
-    train_network(model, X, Y, EPOCHS, test_x, test_y)
+    # train_model(model, X, Y, EPOCHS, test_x, test_y)
+    model.load('tflearnmodel')
     plt_result(model, test_x)
 
 
-if __name__ == '__main___':
+if __name__ == '__main__':
     main()

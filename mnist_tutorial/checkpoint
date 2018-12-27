@@ -1,2 +1,2 @@
-model_checkpoint_path: "C:\\git\\NTNU\\TDT4113\\mnist_tutorial\\tflearncnn.model"
-all_model_checkpoint_paths: "C:\\git\\NTNU\\TDT4113\\mnist_tutorial\\tflearncnn.model"
+model_checkpoint_path: "C:\\git\\tflearn_testing\\mnist_tutorial\\tflearnmodel"
+all_model_checkpoint_paths: "C:\\git\\tflearn_testing\\mnist_tutorial\\tflearnmodel"
