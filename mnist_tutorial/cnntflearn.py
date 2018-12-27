@@ -12,7 +12,7 @@ LEARNING_RATE = 0.01
 EPOCHS = 10
 
 
-def get_model(learning_rate=0.01):
+def simple_network(learning_rate=0.01):
     cn = input_data(shape=[None, 28, 28, 1], name='input')
 
     cn = conv_2d(cn, 32, 2, activation='relu')
@@ -64,7 +64,7 @@ def main():
     X = X.reshape([-1, 28, 28, 1])
     test_x = test_x.reshape([-1, 28, 28, 1])
 
-    model = load_model(LEARNING_RATE)
+    model = simple_network(LEARNING_RATE)
     plt_result(model, test_x)
 
     # train_model(model, X, Y, EPOCHS, test_x, test_y)
