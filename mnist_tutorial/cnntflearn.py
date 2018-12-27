@@ -30,14 +30,16 @@ def get_model(learning_rate=0.01):
     return tflearn.DNN(cn)
 
 
-# model.fit(X, Y, n_epoch=10, validation_set=(test_x, test_y), snapshot_step=500, show_metric=True, run_id='mnist')
-# model.save('tflearncnn.model')
-
-def train_network(model, X, Y, epochs, test_x, test_y, save_model=True, model_name="tflearnmodel"):
+def train_model(model, X, Y, epochs, test_x, test_y, save_model=True, model_name="tflearnmodel"):
     model.fit(X, Y, n_epoch=epochs, validation_set=(test_x, test_y), snapshot_step=500, show_metric=True,
               run_id='mnist')
     if save_model:
         model.save(model_name)
+
+
+def load_model(model, model_name='tflearnmodel'):
+    return model.load(model_name)
+
 
 
 def predict_from_model(model, data):
@@ -62,10 +64,11 @@ def main():
     X = X.reshape([-1, 28, 28, 1])
     test_x = test_x.reshape([-1, 28, 28, 1])
 
-    model = get_model(LEARNING_RATE)
+    model = load_model(LEARNING_RATE)
     plt_result(model, test_x)
 
-    train_network(model, X, Y, EPOCHS, test_x, test_y)
+    # train_model(model, X, Y, EPOCHS, test_x, test_y)
+    load_model(model, 'tflearnmodel')
     plt_result(model, test_x)
 
 
