@@ -36,7 +36,8 @@ The model achieves different results based on the hyperparameteres. By using 10 
 99% accuracy. The most epochs I have tried to train with, was 100, and the model then achieved a 99.58% accuracy on the 
 validation set, and I imagine that the model has converged on this point.
 
-These results are taken randomly from the testdata:
+#### Random results:
+
 ![Results](img/random_results.PNG)
 
 
@@ -46,7 +47,8 @@ results
 However, there are some examples that the model predicts wrongly. Of the 10000 validation images, the model predicts
 47 of them wrong. 
 
-Here are nine examples:
+#### Wrongly classified images
+
 ![Wron](img/wrong_results.PNG)
 
 
