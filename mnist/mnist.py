@@ -24,6 +24,14 @@ TRAINING = False
 
 
 def get_model(learning_rate=0.01, tbv=0, activation='relu', aug=None):
+    """
+    Get the model used for training and predictions
+    :param learning_rate: Learning rate for the model
+    :param tbv: Tensorboard verbose
+    :param activation: Activation function used on all layers (except last, where softmax is used)
+    :param aug: Data augmentation
+    :return: The model
+    """
     # Input(28,28,1) -> conv2d(32,3), max2d(2) -> conv2d(64,2) -> max2d(2) -> dropout(0.3) -> Dense(1024) ->
     # drop(0.7) -> Dense(10, Softmax)
 
@@ -46,6 +54,11 @@ def get_model(learning_rate=0.01, tbv=0, activation='relu', aug=None):
 
 
 def get_augmentation(max_rot_deg=20):
+    """
+    Augmentations used to prevent overfitting
+    :param max_rot_deg: Maximum rotation degree
+    :return: The augmentation
+    """
     aug = tflearn.ImageAugmentation()
     aug.add_random_rotation(max_rot_deg)
 
@@ -53,9 +66,22 @@ def get_augmentation(max_rot_deg=20):
 
 
 def train_model(model, epochs, batch_size, data, labels, val_data, val_labels, save=True, mn="model"):
+    """
+    Train the given model with given params
+    :param model: The model to be trained
+    :param epochs: Number of epochs to train the model for
+    :param batch_size: Batch size used
+    :param data: Training data
+    :param labels: Training labels
+    :param val_data: Validation data
+    :param val_labels: Validation labels
+    :param save: Set to 'True' to save the model
+    :param mn: Model name
+    :return:
+    """
+
     model.fit(data, labels, n_epoch=epochs, validation_set=(val_data, val_labels), show_metric=True,
               batch_size=batch_size, run_id='mnist', snapshot_step=5000, snapshot_epoch=True)
-
     if save:
         model.save("models/" + mn)
 
@@ -105,7 +131,7 @@ def plt_random_wrong_predictions(model, data, labels, n=9):
 
     # Add the wrong predictions to the plot
     for i in range(n):
-        num = wrongs.pop(random.randint(0, len(wrongs)-1))
+        num = wrongs.pop(random.randint(0, len(wrongs) - 1))
         output = np.argmax(model.predict([data[num]]))
         correct = np.argmax(labels[num])
 
@@ -135,8 +161,8 @@ def main():
 
     if not TRAINING:
         try:
-            print("Loading model:",model_name)
-            model.load("models/"+model_name)
+            print("Loading model:", model_name)
+            model.load("models/" + model_name)
             print("Model loaded")
         except ValueError:
             print("Model not found.")
