@@ -81,7 +81,7 @@ def train_model(model, epochs, batch_size, data, labels, val_data, val_labels, s
     """
 
     model.fit(data, labels, n_epoch=epochs, validation_set=(val_data, val_labels), show_metric=True,
-              batch_size=batch_size, run_id='mnist', snapshot_step=5000, snapshot_epoch=True)
+              batch_size=batch_size, run_id='cnn_mnist', snapshot_step=5000, snapshot_epoch=True)
     if save:
         model.save("models/" + mn)
 
