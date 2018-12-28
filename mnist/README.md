@@ -37,9 +37,9 @@ The model achieves different results based on the hyperparameteres. By using 10 
 validation set, and I imagine that the model has converged on this point.
 
 These results are taken randomly from the testdata
-![Results](./img/random_results.png)
+![Results](img/random_results.PNG)
 
 Of the 10000 validation images, the model predicts 47 of them wrong.
-![Wron](./img/wrong_results.png)
+![Wron](img/wrong_results.PNG)
 Some of these are quite tricky even for a human to understand, so it is understandable that the model has some problems 
 with these
