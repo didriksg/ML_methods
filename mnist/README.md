@@ -41,16 +41,18 @@ The model achieves different results based on the hyperparameteres. By using 10 
 99% accuracy. The most epochs I have tried to train with, was 100, and the model then achieved a 99.58% accuracy on the 
 validation set, and I imagine that the model has converged on this point.
 
-By getting these results, I used the following hyperparams:
+By getting these results, I used the following settings:
+
+#### Hyperparams:
 - **Learning rate:** 0.0005
-- Epochs: 100
-- Batch size: 64
+- **Epochs:** 100
+- **Batch size:** 64
 
-Augmentation settings:
-- *Maximum rotation angle:* 20 degrees
+#### Augmentation settings:
+- **Maximum rotation angle:** 20 degrees
 
 
-#### Random results:
+### Random results:
 
 ![Results](img/random_results.PNG)
 
@@ -61,7 +63,7 @@ results
 However, there are some examples that the model predicts wrongly. Of the 10000 validation images, the model predicts
 47 of them wrong. 
 
-#### Wrongly classified images
+### Wrongly classified images
 
 ![Wron](img/wrong_results.PNG)
 
