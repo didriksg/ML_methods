@@ -2,7 +2,9 @@
 Using the MNIST dataset, I experimented some using a CNN to classify the dataset. Per now, the model achieves a 99.6% 
 accuracy with dropout and image augmentation enabled.
 
-## Model layout
+## Model
+The model used is a fairly small CNN.
+### Layout
 
 | Layer           | Params                                   |
 | -------------   |------------------------------------------|
@@ -20,13 +22,16 @@ accuracy with dropout and image augmentation enabled.
 | Dense           | 10                                       |
 | _Softmax_       |                                          |
 
+
 ## Dataset
 The dataset used, is the MNIST dataset. The dataset is divided into 55000 training images, and 10000 validation images
 
 
 ## Avoiding overfitting
+
 ### Dropout
 To avoid the model overfitting, I used two dropout layers with 30% and 70% keeping probability.
+
 ### Augmentation
 The model utilizes image augmentation. Specifically it uses a random rotation with a maximum rotation of 20 degrees.
 No other augmentation has been tested at the moment
@@ -35,6 +40,15 @@ No other augmentation has been tested at the moment
 The model achieves different results based on the hyperparameteres. By using 10 epochs, the model already achieves around 
 99% accuracy. The most epochs I have tried to train with, was 100, and the model then achieved a 99.58% accuracy on the 
 validation set, and I imagine that the model has converged on this point.
+
+By getting these results, I used the following hyperparams:
+- **Learning rate:** 0.0005
+- Epochs: 100
+- Batch size: 64
+
+Augmentation settings:
+- *Maximum rotation angle:* 20 degrees
+
 
 #### Random results:
 
