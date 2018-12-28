@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\git\\tflearn_testing\\mnist\\models\\simple_150"
+all_model_checkpoint_paths: "C:\\git\\tflearn_testing\\mnist\\models\\simple_150"
