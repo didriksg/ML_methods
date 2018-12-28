@@ -38,6 +38,8 @@ validation set, and I imagine that the model has converged on this point.
 
 These results are taken randomly from the testdata:
 ![Results](img/random_results.PNG)
+
+
 The images picked in this image are quite average, and should be no problem for the model to predict, as seen on the
 results
 
@@ -46,5 +48,7 @@ However, there are some examples that the model predicts wrongly. Of the 10000 v
 
 Here are nine examples:
 ![Wron](img/wrong_results.PNG)
+
+
 Some of these are quite tricky even for a human to understand, so it is understandable that the model has some problems 
 with these.
