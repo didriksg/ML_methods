@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tflearn
 import tflearn.datasets.cifar10 as cifar
-from tflearn.layers.conv import conv_2d, max_pool_2d
-from tflearn.layers.core import input_data, dropout, fully_connected
+from tflearn.layers.conv import conv_2d, max_pool_2d, batch_normalization
+from tflearn.layers.core import input_data, dropout, fully_connected, flatten
 from tflearn.layers.estimator import regression
 from tflearn import ImageAugmentation
 
@@ -17,7 +17,7 @@ BATCH_SIZE = 64
 
 # Augmentation
 AUGMENT = True
-MAX_ROTATION_ANGLE = 10
+MAX_ROTATION_ANGLE = 15
 MIRROR_IMAGE = True
 
 # Model name (For saving purposes)
@@ -50,7 +50,36 @@ def mnist_model(lr, tbv=0, activation='relu', aug=None):
 
 
 def improved_model(lr, tbv=0, activation='relu', aug=None):
-    pass
+    optimizer = tflearn.optimizers.RMSProp(learning_rate=lr, decay=1e-6)
+
+    network = input_data(shape=[32, 32, 3], name='input', data_augmentation=aug)
+
+    network = conv_2d(network, 32, 3, activation=activation)
+    network = batch_normalization(network)
+    network = conv_2d(network, 32, 3, activation=activation)
+    network = batch_normalization(network)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.2)
+
+    network = conv_2d(network, 64, 3, activation=activation)
+    network = batch_normalization(network)
+    network = conv_2d(network, 64, 3, activation=activation)
+    network = batch_normalization(network)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.3)
+
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = batch_normalization(network)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = batch_normalization(network)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.4)
+
+    network = flatten(network)
+    network = fully_connected(network, 10, activation='softmax')
+
+    network = regression(network, optimizer='adam', learning_rate=lr, loss='categorical_crossentropy')
+    return tflearn.DNN(network, tensorboard_verbose=tbv)
 
 
 def train_model(model, epochs, batch_size, data, labels, val_data, val_labels, save=True, mn="model"):
@@ -166,7 +195,7 @@ def main():
     # show_random_image(train_img, train_labels)
 
     aug = augmentation() if AUGMENT else None
-    model = mnist_model(LEARNING_RATE, aug=aug, tbv=0)
+    model = improved_model(LEARNING_RATE, aug=aug, tbv=0)
 
     if TRAINING:
         train_model(model, epochs=EPOCHS, batch_size=BATCH_SIZE, data=train_img, labels=train_labels,
