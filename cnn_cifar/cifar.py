@@ -42,8 +42,9 @@ def get_data_information(data, labels, plot=False):
     print("Number of Labels::", len(labels))
 
     if plot:
+        unique, count = np.unique(return_counts=True)
         fig, ax = plt.subplot()
-        plt.bar(np.arrange(1, 10), [len(i) for i in data])
+        plt.bar(np.arrange(1, 10), )
         ax.set_xlabels(CIFAR_LABELS)
         plt.show()
 
