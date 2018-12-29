@@ -23,13 +23,16 @@ def main():
     model_name = MODEL_NAME
 
     # Get training and validation data and labels
-    train_data, train_labels, validation_data, validation_labels = cifar.load_data(one_hot=True)
+    train, validation = cifar.load_data(one_hot=True)
+    train_img, train_labels = train
+    validation_img, validation_labels = validation
 
     plt.figure()
-    test_image = train_data[0]
+    test_image = train_img[100]
 
     plt.figure()
     plt.imshow(test_image)
+    plt.show()
 
 
 if __name__ == '__main__':
