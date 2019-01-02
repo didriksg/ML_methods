@@ -6,9 +6,11 @@ from keras.utils import normalize
 import matplotlib.pyplot as plt
 import keras_implementations.cnn_mnist.models as models
 
+import os
+
 # Params
 LEARNING_RATE = 0.0001
-EPOCHS = 50
+EPOCHS = 1
 BATCH_SIZE = 32
 
 TRAINING = True
@@ -34,8 +36,15 @@ def show_image_and_label(img, label):
     plt.show()
 
 
-def train_model(model, train_data, train_labels, lr, batch_size, epochs, mn="mnist_model", tbv=0):
+def train_model(model, train_data, train_labels, batch_size, epochs, save=True, mn="mnist_model", tbv=0):
+    # Fit the model according to params
     model.fit(train_data, train_labels, batch_size=batch_size, epochs=epochs, validation_split=0.1)
+
+    if save:
+        path = "models/"+mn
+        if not os.path.exists(path):
+            os.makedirs(path)
+        model.save(path)
 
 
 def main():
@@ -45,15 +54,15 @@ def main():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     # Show an image to verify that the data is loaded and understood correctly
-    show_image_and_label(x_train[0], y_train[0])
-    show_image_and_label(x_test[0], y_test[0])
+    # show_image_and_label(x_train[0], y_train[0])
+    # show_image_and_label(x_test[0], y_test[0])
 
     # Normalize the data
     x_train = normalize(x_train, axis=1)
     x_test = normalize(x_test, axis=1)
 
     # Import the model from the models defined in 'models.py'
-    model = models.cnn_model()
+    model = models.cnn_model()g
 
     # If we are training the model, then train the model
     if TRAINING:

@@ -10,3 +10,7 @@ cnn_cifar/weights/
 cnn_mnist/weights/
 
 *.pyc
+
+tflearn/cnn_cifar/weights/cifar_ag/
+
+tflearn/cnn_cifar/weights/
