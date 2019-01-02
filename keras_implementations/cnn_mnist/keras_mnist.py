@@ -62,7 +62,7 @@ def main():
     x_test = normalize(x_test, axis=1)
 
     # Import the model from the models defined in 'models.py'
-    model = models.cnn_model()g
+    model = models.cnn_model()
 
     # If we are training the model, then train the model
     if TRAINING:

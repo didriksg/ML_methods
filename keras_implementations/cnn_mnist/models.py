@@ -3,6 +3,8 @@ from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout
 from keras.activations import relu, softmax
 from keras.optimizers import Adam
 
+import numpy as np
+
 
 def ann_model(def_activation=relu):
     model = Sequential()
@@ -20,7 +22,7 @@ def ann_model(def_activation=relu):
 def cnn_model(lr = Adam().lr, def_activation=relu):
     model = Sequential()
 
-    model.add(Conv2D(filters=32, kernel_size=(3,3), activation=def_activation))
+    model.add(Conv2D(filters=32, kernel_size=(3,3), input_shape=[28,28,1], activation=def_activation))
     model.add(MaxPool2D(pool_size=2))
 
     model.add(Conv2D(filters=64, kernel_size=(2,2), activation=def_activation))
