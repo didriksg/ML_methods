@@ -1,22 +1,28 @@
 import time
+import os
 
 from keras.datasets import mnist
 from keras.utils import normalize
 
 import matplotlib.pyplot as plt
+
 import keras_implementations.cnn_mnist.models as models
 
-import os
-
-# Params
+# Hyperparams
 LEARNING_RATE = 0.0001
-EPOCHS = 1
+EPOCHS = 5
 BATCH_SIZE = 32
 
+# Settings
 TRAINING = True
+SAVE_MODEL = True
 SHOW_WRONGS = False
-MODEL_NAME = 'mnist_model' + str(int(time.time()))
-TBV = 0
+IS_CNN = True
+VERBOSE = 1
+
+# Constants
+MODELS_BASE_DIR = "models/"
+MODEL_NAME = 'mnist_model'
 
 
 def show_random_prediction(model, val_data, val_labels):
@@ -36,15 +42,13 @@ def show_image_and_label(img, label):
     plt.show()
 
 
-def train_model(model, train_data, train_labels, batch_size, epochs, save=True, mn="mnist_model", tbv=0):
+def train_model(model, train_data, train_labels, val_data, batch_size, epochs, save=True, tbv=0):
     # Fit the model according to params
-    model.fit(train_data, train_labels, batch_size=batch_size, epochs=epochs, validation_split=0.1)
+    model.fit(train_data, train_labels, batch_size=batch_size, epochs=epochs, validation_split=0.1, verbose=tbv,
+              validation_data=val_data)
 
     if save:
-        path = "models/"+mn
-        if not os.path.exists(path):
-            os.makedirs(path)
-        model.save(path)
+        model.save_weights(MODELS_BASE_DIR + MODEL_NAME + ".h5")
 
 
 def main():
@@ -58,15 +62,20 @@ def main():
     # show_image_and_label(x_test[0], y_test[0])
 
     # Normalize the data
-    x_train = normalize(x_train, axis=1)
-    x_test = normalize(x_test, axis=1)
+    if IS_CNN:
+        x_train = x_train.reshape([-1,28,28,1])
+        x_test = x_test.reshape([-1,28,28,1])
+    else:
+        x_train = normalize(x_train)
+        x_test = normalize(x_test)
 
     # Import the model from the models defined in 'models.py'
-    model = models.cnn_model()
-
+    model = models.cnn_model(lr=LEARNING_RATE) if IS_CNN else models.ann_model(lr=LEARNING_RATE)
     # If we are training the model, then train the model
     if TRAINING:
-        train_model(model, x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, mn=MODEL_NAME, tbv=TBV)
+        train_model(model, x_train, y_train, (x_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS, tbv=VERBOSE,
+                    save=SAVE_MODEL)
+    # If not, do a prediction; Either a random, or only show the wrongly predicted ones
     else:
         prediction_option = show_random_wrong_prediction if SHOW_WRONGS else show_random_prediction
         prediction_option(model, x_test, y_test)
