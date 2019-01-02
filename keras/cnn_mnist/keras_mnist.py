@@ -3,8 +3,8 @@ from keras.datasets import mnist
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 # Params
-DATA_PATH = 'data/'
 LEARNING_RATE = 0.0001
 EPOCHS = 50
 
@@ -22,12 +22,13 @@ def show_image_and_label(img, label):
     plt.title(np.argmax(label))
     plt.xticks([])
     plt.yticks([])
-    plt.imshow(img)
+    plt.imshow(img, cmap='Greys')
+    plt.show()
 
 
 def main():
     # Load data
-    (train_data, train_labels), (val_data, val_labels) = mnist.load_data(DATA_PATH)
+    (train_data, train_labels), (val_data, val_labels) = mnist.load_data()
 
     # Show an image to verify that we loaded the data correctly
     show_image_and_label(train_data[0], train_labels[0])
