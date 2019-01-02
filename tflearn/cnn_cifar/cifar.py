@@ -82,6 +82,34 @@ def improved_model(lr, tbv=0, activation='relu', aug=None):
     return tflearn.DNN(network, tensorboard_verbose=tbv)
 
 
+def new_model(lr, tbv=0, activation='relu', aug=None):
+    network = input_data(shape=[32, 32, 3], name='input', data_augmentation=aug)
+
+    network = conv_2d(network, 64, 3, activation=activation)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.2)
+
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.2)
+
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = conv_2d(network, 128, 1, activation=activation)
+    network = conv_2d(network, 128, 1, activation=activation)
+    network = max_pool_2d(network, 2)
+    network = dropout(network, 0.7)
+
+    network = conv_2d(network, 128, 3, activation=activation)
+    network = fully_connected(network, 10, activation='softmax')
+
+    network = regression(network, optimizer='adam', learning_rate=lr, loss='categorical_crossentropy')
+    return tflearn.DNN(network, tensorboard_verbose=tbv)
+
 def train_model(model, epochs, batch_size, data, labels, val_data, val_labels, save=True, mn="model"):
     """
     Train the given model with given params
