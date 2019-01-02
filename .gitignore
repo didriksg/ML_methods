@@ -8,3 +8,5 @@ cnn_cifar/cifar-10-batches-py/
 cnn_cifar/weights/
 
 cnn_mnist/weights/
+
+*.pyc
