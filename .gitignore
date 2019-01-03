@@ -14,3 +14,9 @@ cnn_mnist/weights/
 tflearn/cnn_cifar/weights/cifar_ag/
 
 tflearn/cnn_cifar/weights/
+
+tflearn_implementation/cnn_cifar/cifar-10-batches-py/
+
+tflearn_implementation/cnn_cifar/weights/cifar_ag/
+
+tflearn_implementation/cnn_cifar/weights/
