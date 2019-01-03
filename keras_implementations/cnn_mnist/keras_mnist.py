@@ -1,45 +1,33 @@
-import time
-import os
-
 from keras.datasets import mnist
 from keras.utils import normalize
 
-import matplotlib.pyplot as plt
+import os, sys
 
+sys.path.insert(1, os.path.join(sys.path[0], '../../'))
+
+from utils import keras_show_random_predictions as show_random, keras_show_wrong_predictions as show_wrong
+from utils import evaluate_model as evaluate, predict as predict
 import keras_implementations.cnn_mnist.models as models
 
 # Hyperparams
 LEARNING_RATE = 0.0001
-EPOCHS = 5
+EPOCHS = 12
 BATCH_SIZE = 32
 
 # Settings
-TRAINING = True
+TRAINING = False
 SAVE_MODEL = True
-SHOW_WRONGS = False
-IS_CNN = True
 VERBOSE = 1
 
+USE_CNN = True
+
+SHOW_WRONGS = False
+
 # Constants
-MODELS_BASE_DIR = "models/"
+MODELS_BASE_DIR = "weights/"
 MODEL_NAME = 'mnist_model'
-
-
-def show_random_prediction(model, val_data, val_labels):
-    pass
-
-
-def show_random_wrong_prediction(model, val_data, val_labels):
-    pass
-
-
-def show_image_and_label(img, label):
-    plt.figure()
-    plt.title(label)
-    plt.xticks([])
-    plt.yticks([])
-    plt.imshow(img, cmap='Greys')
-    plt.show()
+MODEL_NAME += '_cnn' if USE_CNN else '_full'
+EXTENSION = '.h5'
 
 
 def train_model(model, train_data, train_labels, val_data, batch_size, epochs, save=True, tbv=0):
@@ -48,7 +36,7 @@ def train_model(model, train_data, train_labels, val_data, batch_size, epochs, s
               validation_data=val_data)
 
     if save:
-        model.save_weights(MODELS_BASE_DIR + MODEL_NAME + ".h5")
+        model.save_weights(MODELS_BASE_DIR + MODEL_NAME + EXTENSION)
 
 
 def main():
@@ -61,24 +49,33 @@ def main():
     # show_image_and_label(x_train[0], y_train[0])
     # show_image_and_label(x_test[0], y_test[0])
 
-    # Normalize the data
-    if IS_CNN:
-        x_train = x_train.reshape([-1,28,28,1])
-        x_test = x_test.reshape([-1,28,28,1])
+    # Preprocess data to fit their network
+    if USE_CNN:
+        x_train = x_train.reshape([-1, 28, 28, 1])
+        x_test = x_test.reshape([-1, 28, 28, 1])
     else:
         x_train = normalize(x_train)
         x_test = normalize(x_test)
 
-    # Import the model from the models defined in 'models.py'
-    model = models.cnn_model(lr=LEARNING_RATE) if IS_CNN else models.ann_model(lr=LEARNING_RATE)
+    # Import the model from the weights defined in 'weights.py'
+    model = models.cnn_model(lr=LEARNING_RATE, shape=x_train.shape[1:]) if USE_CNN else models.fully_connected_model(
+        lr=LEARNING_RATE)
+
     # If we are training the model, then train the model
     if TRAINING:
         train_model(model, x_train, y_train, (x_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS, tbv=VERBOSE,
                     save=SAVE_MODEL)
     # If not, do a prediction; Either a random, or only show the wrongly predicted ones
     else:
-        prediction_option = show_random_wrong_prediction if SHOW_WRONGS else show_random_prediction
-        prediction_option(model, x_test, y_test)
+        print("Loading model:", MODEL_NAME)
+        model.load_weights(MODELS_BASE_DIR + MODEL_NAME + EXTENSION)
+        print("Model loaded")
+
+    evaluate(model, x_test, y_test)
+    prediction = predict(model, x_test)
+
+    prediction_option = show_wrong if SHOW_WRONGS else show_random
+    prediction_option(x_test, y_test, prediction, [28, 28])
 
 
 if __name__ == '__main__':

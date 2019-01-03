@@ -5,7 +5,7 @@ from keras.optimizers import Adam
 import numpy as np
 
 
-def ann_model(lr=Adam().lr, shape=None, def_activation='relu'):
+def fully_connected_model(lr=Adam().lr, def_activation='relu'):
     model = Sequential()
     model.add(Flatten())
     model.add(Dense(128, activation=def_activation))
@@ -21,7 +21,7 @@ def ann_model(lr=Adam().lr, shape=None, def_activation='relu'):
 def cnn_model(lr=Adam().lr, shape=None, def_activation='relu'):
     model = Sequential()
 
-    model.add(Conv2D(32, kernel_size=(3, 3), input_shape=[28, 28, 1], activation=def_activation))
+    model.add(Conv2D(32, kernel_size=(3, 3), input_shape=shape, activation=def_activation))
     model.add(MaxPool2D(pool_size=(2,2)))
 
     model.add(Conv2D(64, kernel_size=(2, 2), activation=def_activation))
