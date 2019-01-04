@@ -5,7 +5,7 @@ from keras.optimizers import Adam
 import numpy as np
 
 
-def fully_connected_model(lr=Adam().lr, def_activation='relu'):
+def fc_model(lr=Adam().lr, def_activation='relu'):
     model = Sequential()
     model.add(Flatten())
     model.add(Dense(128, activation=def_activation))
