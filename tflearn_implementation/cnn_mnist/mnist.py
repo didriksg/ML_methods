@@ -83,7 +83,7 @@ def train_model(model, epochs, batch_size, data, labels, val_data, val_labels, s
     model.fit(data, labels, n_epoch=epochs, validation_set=(val_data, val_labels), show_metric=True,
               batch_size=batch_size, run_id='cnn_mnist', snapshot_step=5000, snapshot_epoch=True)
     if save:
-        model.save("models/" + mn)
+        model.save("weights/" + mn)
 
 
 def plt_random_predictions(model, data, labels):
@@ -162,7 +162,7 @@ def main():
     if not TRAINING:
         try:
             print("Loading model:", model_name)
-            model.load("models/" + model_name)
+            model.load("weights/" + model_name)
             print("Model loaded")
         except ValueError:
             print("Model not found.")
