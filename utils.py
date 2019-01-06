@@ -1,6 +1,8 @@
+import random, time, glob
 import matplotlib.pyplot as plt
-import random
 import numpy as np
+
+from constants import NAME_WITH_TIME
 
 
 def keras_show_random_predictions(data, labels, predictions, shape, wrong=False):
@@ -22,11 +24,12 @@ def keras_show_random_predictions(data, labels, predictions, shape, wrong=False)
     for i in range(9):
         plt.subplot(3, 3, i + 1)
 
-        num = wrongs.pop(random.randint(0, len(wrongs)-1)) if wrong else random.randint(0, len(labels)-1)
+        num = wrongs.pop(random.randint(0, len(wrongs) - 1)) if wrong else random.randint(0, len(labels) - 1)
         output = np.argmax(predictions[num])
         correct = labels[num]
 
-        show_image_and_label(plt, data[num].reshape(shape), "Predicted output: {}\nReal value: {}".format(output, correct))
+        show_image_and_label(plt, data[num].reshape(shape),
+                             "Predicted output: {}\nReal value: {}".format(output, correct))
     plt.show()
 
 
@@ -48,6 +51,7 @@ def evaluate_model(model, val_data, val_labels):
     print("Model results:")
     print("Model validation loss: {:.5}\nModel Accuracy: {:.2%}".format(res[0], res[1]))
     print(divider(70))
+    return res
 
 
 def predict(model, data):
@@ -61,3 +65,7 @@ def divider(length):
     for _ in range(length):
         s += str("-")
     return s
+
+
+def name_model(model_name, augmented):
+    return model_name + ("_augmented" if augmented else "") + ("_{}".format(int(time.time())) if NAME_WITH_TIME else "")
