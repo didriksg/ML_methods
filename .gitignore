@@ -3,12 +3,6 @@
 
 tflearn/cnn_cifar/cifar-10-batches-py/
 
-cnn_cifar/cifar-10-batches-py/
-
-cnn_cifar/weights/
-
-cnn_mnist/weights/
-
 *.pyc
 
 tflearn/cnn_cifar/weights/cifar_ag/
@@ -20,7 +14,5 @@ tflearn_implementation/cnn_cifar/cifar-10-batches-py/
 tflearn_implementation/cnn_cifar/weights/cifar_ag/
 
 tflearn_implementation/cnn_cifar/weights/
-
-keras_implementations/cnn_mnist/weights/
 
 *.h5
