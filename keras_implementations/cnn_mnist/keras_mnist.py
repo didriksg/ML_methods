@@ -20,7 +20,7 @@ IMAGE_WIDTH = IMAGE_HEIGHT = 28
 CHANNELS = 1
 
 # Settings
-TRAINING = True
+TRAINING = False
 AUGMENT = True
 USE_IMPROVED = True
 SHOW_PREDICTIONS = True
@@ -79,7 +79,7 @@ def main():
             model.load_weights(WEIGHTS_BASE_DIR + model_name + WEIGHTS_EXTENSION)
             print("Model loaded")
         else:
-            raise FileNotFoundError("Weights with filename '{}' was not found".format(model_name))
+            raise FileNotFoundError(f"Weights with filename '{model_name}' was not found")
 
         evaluate_model(model, x_test, y_test)
 

@@ -2,8 +2,6 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout, BatchNormalization
 from keras.optimizers import Adam
 
-import numpy as np
-
 
 def improved_cnn(lr, shape, num_classes, def_activation='relu'):
     model = Sequential()
@@ -25,6 +23,7 @@ def improved_cnn(lr, shape, num_classes, def_activation='relu'):
 
     model.compile(optimizer=Adam(lr=lr), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     return model
+
 
 def cnn_model(lr=Adam().lr, shape=None, def_activation='relu'):
     model = Sequential()

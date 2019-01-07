@@ -4,20 +4,6 @@ from keras.optimizers import Adam
 
 import numpy as np
 
-
-def fc_model(lr=Adam().lr, def_activation='relu'):
-    model = Sequential()
-    model.add(Flatten())
-    model.add(Dense(128, activation=def_activation))
-    model.add(Dense(128, activation=def_activation))
-    model.add(Dense(10, activation='softmax'))
-
-    model.compile(optimizer=Adam(lr=lr),
-                  loss='sparse_categorical_crossentropy',
-                  metrics=['accuracy'])
-    return model
-
-
 def cnn_model(lr=Adam().lr, shape=None, def_activation='relu'):
     model = Sequential()
 
