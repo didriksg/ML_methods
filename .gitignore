@@ -16,3 +16,5 @@ tflearn_implementation/cnn_cifar/weights/cifar_ag/
 tflearn_implementation/cnn_cifar/weights/
 
 *.h5
+
+*.DESKTOP-8DTLGUS

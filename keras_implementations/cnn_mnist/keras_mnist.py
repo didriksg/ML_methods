@@ -6,7 +6,6 @@ sys.path.insert(1, os.path.join(sys.path[0], '../'))
 
 from training import train_model
 from constants import WEIGHTS_BASE_DIR, WEIGHTS_EXTENSION
-from training_utils import get_augmentation
 from cnn_mnist.models import cnn_model, improved_cnn
 
 from utils import keras_show_random_predictions as show_predictions
