@@ -75,7 +75,7 @@ def main():
     # If we are training the model, then train the model
     if TRAINING:
         train_model(model, x_train, y_train, (x_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS, augment=augment,
-                    model_name=model_name, verbose=VERBOSE)
+                    model_name=model_name, verbose=VERBOSE, tb=True)
     # If not, do a prediction; Either a random, or only show the wrongly predicted ones
     else:
         print("Loading model:", model_name)

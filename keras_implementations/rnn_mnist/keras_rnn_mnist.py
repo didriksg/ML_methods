@@ -1,7 +1,6 @@
-import tensorflow as tf
+from keras.datasets import mnist
+from keras.layers import Dense, Dropout, CuDNNLSTM
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, CuDNNLSTM, LSTM
-from keras.datasets import mnist, cifar10
 from keras.optimizers import Adam
 
 from training import train_model
@@ -22,7 +21,7 @@ def main():
     x_test = x_test.reshape([-1, IMAGE_WIDTH, IMAGE_HEIGHT, CHANNELS])
 
     mod = model(LEARNING_RATE, x_train.shape[1:])
-    train_model(mod, x_train, y_train, (x_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS, augment=None,
+    train_model(mod, x_train, y_train, (x_test, y_test), batch_size=BATCH_SIZE, epochs=EPOCHS,
                 model_name=MODEL_NAME)
 
 

@@ -1,15 +1,19 @@
 from keras.callbacks import ModelCheckpoint, Callback, TensorBoard
 
-import glob, re, os
+import glob, re, os, sys
+sys.path.insert(1, os.path.join(sys.path[0], '../../'))
+
 from utils import divider
 from constants import WEIGHTS_BASE_DIR, WEIGHTS_EXTENSION, VALIDATION_SPLIT
 
 
-def train_model(model, train_data, train_labels, val_data, batch_size, epochs, augment, model_name, verbose=1, tb=False):
+def train_model(model, train_data, train_labels, val_data, batch_size, epochs, model_name, augment=None, verbose=1,
+                tb=False):
     """
     Training wrappper. Trains a given model with given params. Can be set to augment if needed. Checkpoints the best
     weights, and cleans them up when finished training.
 
+    :param tb: TensorBoard enabled
     :param model: The model being trained
     :param train_data: Training data
     :param train_labels: Training labels
@@ -30,7 +34,12 @@ def train_model(model, train_data, train_labels, val_data, batch_size, epochs, a
     # Callback to cleanup the checkpoints
     delete_checkpoint = CheckpointCleanup(model_name)
 
-    tensorboard = TensorBoard(log_dir=f'logs/{model_name}') if tb else None
+    # Tensorboard callback
+    tensorboard = TensorBoard(log_dir=f'logs/{model_name}')
+
+    callbacks = [checkpoint_callback, delete_checkpoint]
+    if tb:
+        callbacks.append(tensorboard)
 
     # Use some of the training data as validation data if there is no validation data specified
     validation_split = VALIDATION_SPLIT if not val_data or len(val_data) <= 0 else 0
@@ -38,8 +47,7 @@ def train_model(model, train_data, train_labels, val_data, batch_size, epochs, a
     # Fit the model according to params
     if augment is None:
         model.fit(train_data, train_labels, batch_size=batch_size, epochs=epochs, verbose=verbose,
-                  validation_data=val_data, validation_split=validation_split)
-        model.save(WEIGHTS_BASE_DIR+model_name+WEIGHTS_EXTENSION)
+                  validation_data=val_data, validation_split=validation_split, callbacks=callbacks)
     else:
         # Set the augmentation and append it to the training data
         datagen = augment
@@ -49,13 +57,12 @@ def train_model(model, train_data, train_labels, val_data, batch_size, epochs, a
         model.fit_generator(generator=datagen.flow(train_data, train_labels, batch_size=batch_size), epochs=epochs,
                             validation_data=val_data, steps_per_epoch=len(train_data) // batch_size,
                             validation_steps=len(train_data) // batch_size,
-                            callbacks=[checkpoint_callback, delete_checkpoint, tensorboard]
-                            )
+                            callbacks=callbacks)
 
 
 class CheckpointCleanup(Callback):
     """
-    Custom callback to cleanup all excess checkpoint. Primarely used on the end of a training
+    Custom callback to cleanup all excess checkpoint. Primarily used on the end of a training
     """
 
     def __init__(self, model_name):
@@ -69,13 +76,13 @@ class CheckpointCleanup(Callback):
         numbs = []
         for file in files:
             try:
-                num = int(re.search("\d{3}", file).group())
-                numbs.append(num)
+                found_num = re.search("_\d{3}", file).group().replace("_", "")
+                numbs.append(int(found_num))
             except AttributeError:
                 pass
 
         max_numb = max(numbs) if len(numbs) > 0 else 0
-        max_numb_str = f"{max_numb.zfill(3)}"
+        max_numb_str = f"{str(max_numb).zfill(3)}"
         print(f"Best checkpoint was in epoch {max_numb_str}")
         for file in files:
             if max_numb_str in file:
