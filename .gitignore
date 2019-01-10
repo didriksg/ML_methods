@@ -23,4 +23,4 @@ tflearn_implementation/cnn_cifar/weights/
 
 *.png
 
-keras_implementations/classification_limited_data/data/dog/\.DS_Store
+keras_implementations/classification_limited_data/data/
