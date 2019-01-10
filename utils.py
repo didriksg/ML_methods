@@ -1,5 +1,6 @@
 import random, time, glob
 import matplotlib.pyplot as plt
+import cv2
 import numpy as np
 
 from constants import NAME_WITH_TIME
@@ -21,14 +22,16 @@ def keras_show_random_predictions(data, labels, predictions, shape, wrong=False)
 
         print("Wrong predictions acquired. {}/{} wrong predictions".format(len(wrongs), len(data)))
 
-    for i in range(9):
+    numbs = [i for i in range(len(labels))]
+    for i in range(min(9,len(labels))):
         plt.subplot(3, 3, i + 1)
-
-        num = wrongs.pop(random.randint(0, len(wrongs) - 1)) if wrong else random.randint(0, len(labels) - 1)
+        random.seed()
+        num = wrongs.pop(random.randint(0, len(wrongs) - 1)) if wrong else numbs.pop(random.randint(0, len(numbs) - 1))
         output = np.argmax(predictions[num])
         correct = labels[num]
 
-        show_image_and_label(plt, data[num].reshape(shape),
+        if len(labels) > 1:
+            show_image_and_label(plt, data[num].reshape(shape),
                              "Predicted output: {}\nReal value: {}".format(output, correct))
     plt.show()
 
@@ -37,7 +40,7 @@ def show_image_and_label(plot, img, title):
     p = plot if plot is not None else plt
     p.xticks([])
     p.yticks([])
-    p.imshow(img, cmap='Greys')
+    p.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     p.title(title)
     return p
 

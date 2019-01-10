@@ -18,3 +18,9 @@ tflearn_implementation/cnn_cifar/weights/
 *.h5
 
 *.DESKTOP-8DTLGUS
+
+*.jpg
+
+*.png
+
+keras_implementations/classification_limited_data/data/dog/\.DS_Store
