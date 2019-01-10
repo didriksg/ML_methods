@@ -15,7 +15,7 @@ import os
 import sys
 
 sys.path.insert(1, os.path.join(sys.path[0], '../'))
-from training import train_model
+from training import train_model_no_augment
 
 SEQ_LEN = 60
 FUTURE_PERIOD_PREDICT = 3
@@ -140,7 +140,7 @@ def main():
 
     model = get_model(LEARNING_RATE, train_x.shape[1:])
 
-    train_model(model, train_x, train_y, (val_x, val_y), batch_size=BATCH_SIZE, epochs=EPOCHS, model_name=NAME, tb=True)
+    train_model_no_augment(model, train_x, train_y, (val_x, val_y), batch_size=BATCH_SIZE, epochs=EPOCHS, model_name=NAME, tb=True)
 
 
 

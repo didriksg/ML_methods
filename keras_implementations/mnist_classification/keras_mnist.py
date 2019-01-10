@@ -6,9 +6,9 @@ import os, sys
 sys.path.insert(1, os.path.join(sys.path[0], '../../'))
 sys.path.insert(1, os.path.join(sys.path[0], '../'))
 
-from training import train_model
+from training import train_model_no_augment
 from constants import WEIGHTS_BASE_DIR, WEIGHTS_EXTENSION
-from cnn_mnist.models import cnn_model, improved_cnn
+from mnist_classification.models import cnn_model, improved_cnn
 
 from utils import keras_show_random_predictions as show_predictions
 from utils import evaluate_model, predict, name_model
@@ -67,12 +67,12 @@ def main():
 
     # If we are training the model, then train the model
     if TRAINING:
-        train_model(model, x_train, y_train, x_test, y_test,
-                    batch_size=BATCH_SIZE,
-                    epochs=EPOCHS,
-                    augment=augment,
-                    model_name=model_name,
-                    verbose=VERBOSE)
+        train_model_no_augment(model, x_train, y_train, x_test, y_test,
+                               batch_size=BATCH_SIZE,
+                               epochs=EPOCHS,
+                               augment=augment,
+                               model_name=model_name,
+                               verbose=VERBOSE)
     # If not, do a prediction; Either a random, or only show the wrongly predicted ones
     else:
         print("Loading model:", model_name)
